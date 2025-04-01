@@ -33,13 +33,18 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun GreetingText(message: String, modifier: Modifier = Modifier) {
+fun GreetingText(message: String, from:String, modifier: Modifier = Modifier) {
     Text(
         text = message,
         fontSize = 100.sp,
         lineHeight = 116.sp
 //        modifier = modifier
     )
+    Text(
+        text = from,
+        fontSize = 36.sp
+    )
+
 }
 
 
@@ -50,6 +55,6 @@ fun GreetingText(message: String, modifier: Modifier = Modifier) {
 @Composable
 fun BirthdayCardPreview() {
     HappyBirthdayTheme {
-        GreetingText(message = "Happy Birthday Sam!")
+        GreetingText(message = "Happy Birthday Sam!", from = "From Karly")
     }
 }
