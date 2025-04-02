@@ -13,4 +13,7 @@
         the UI\'s construction, such as initializing an element and then attaching it to a parent.
         To create a Composable function, you add the @Composable annotation to the function name.
     </string>
+    <!-- Task Manager String -->
+    <string name="task_manager_title">All tasks completed</string>
+    <string name="task_manager_encouragement">Nice work!</string>
 </resources>
