@@ -10,9 +10,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -56,7 +58,9 @@ class MainActivity : ComponentActivity() {
 fun BusinessCard() {
     Column(verticalArrangement = Arrangement.Bottom, modifier = Modifier.fillMaxHeight()) {
         Info()
+        Spacer(modifier = Modifier.height(200.dp))
         ComposeContact()
+        Spacer(modifier = Modifier.height(100.dp))
     }
 }
 
@@ -74,7 +78,10 @@ fun BusinessCardPreview() {
 
 @Composable
 fun Info() {
-    Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 190.dp)) {
+    Column(
+//        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 190.dp)
+        modifier = Modifier.padding(16.dp)
+    ) {
         val img = painterResource(id = R.drawable.image_profile)
         val borderWidth = 4.dp
         Image(
@@ -125,7 +132,9 @@ fun InfoPreview() {
 
 @Composable
 fun ComposeContact() {
-    Column(modifier = Modifier.padding(bottom = 100.dp)) {
+    Column(
+//        modifier = Modifier.padding(bottom = 100.dp)
+    ) {
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier
@@ -192,7 +201,10 @@ fun ComposeContactPreview() {
 @Composable
 fun TestIcon() {
     Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-        Icon(Icons.Rounded.Share, contentDescription = "Basket", modifier = Modifier.padding(end = 15.dp))
+        Icon(
+            Icons.Rounded.Share,
+            contentDescription = "Basket",
+            modifier = Modifier.padding(end = 15.dp))
         Text(text = "email@domain.com")
     }
 }
