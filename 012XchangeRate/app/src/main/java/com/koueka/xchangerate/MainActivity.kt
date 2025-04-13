@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -29,8 +30,11 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.koueka.xchangerate.ui.theme.XchangeRateTheme
+import java.text.NumberFormat
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,12 +55,22 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+enum class Direction {INIT, TF_TOP, TF_BOTTOM}
+
 
 @Composable
 fun Xchange(modifier: Modifier = Modifier) {
     var amountTop by remember { mutableStateOf("") }
     var amountBottom by remember { mutableStateOf("") }
 //    val focusRequester = remember { FocusRequester() }
+
+    var xchDirection by remember { mutableStateOf(Direction.INIT) }
+    val xchRate: Double = 416.36517
+
+/*
+    val amountIn = amountTop.toDoubleOrNull() ?: 0.0
+    val amountOut = amountBottom.toDoubleOrNull() ?: 0.0
+*/
 
     Column (
         verticalArrangement = Arrangement.Center,
@@ -93,27 +107,54 @@ fun Xchange(modifier: Modifier = Modifier) {
 
         TextField(
             value = amountTop,
-            onValueChange = { str -> amountTop = str },
+            onValueChange = { str ->
+                amountTop = str
+
+                //
+                val amountIn = amountTop.toDoubleOrNull() ?: 0.0
+                val result = amountIn * xchRate
+                amountBottom = NumberFormat.getInstance().format(result)
+
+                /*
+                                //val amountIn = amountTop.toDoubleOrNull() ?: 0.0
+                                var amountIn = 0.0
+                                android.util.Log.d("MainActivity", " valueChanged amountTop=$amountTop")
+                                if (null == amountTop.toDoubleOrNull()) {
+                                    val tmp = NumberFormat.getNumberInstance().format(amountTop)
+                                    android.util.Log.d("MainActivity", " valueChanged tmp=$tmp")
+                                    amountIn = tmp.toDoubleOrNull() ?: 0.0
+                                    android.util.Log.d("MainActivity", " valueChanged amountIn=$amountIn")
+                                } else {
+                                    amountIn = amountTop.toDoubleOrNull() ?: 0.0
+                                    android.util.Log.d("MainActivity", " valueChanged amountIn=$amountIn")
+                                }
+
+                                val result = amountIn * xchRate
+                                amountBottom = NumberFormat.getNumberInstance().format(result)
+                */
+            },
             singleLine = true,
             label = { Text("Amount") },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
             modifier = Modifier
                 .onFocusEvent {
                     if (it.isFocused) {
+                        xchDirection = Direction.TF_TOP
                         android.util.Log.d("MainActivity", " isFocused amountTop has the focus")
-                    }
-                    //android.util.Log.d("MainActivity", " FocusEvent amountTop hasFocus=${it.hasFocus}")
-                    //android.util.Log.d("MainActivity", " FocusEvent amountTop isFocus=${it.isFocused}")
-                    //android.util.Log.d("MainActivity", " FocusEvent amountTop isCaptured=${it.isCaptured}")
-                }/*
-                .onFocusChanged {
-                    android.util.Log.d("MainActivity", " FocusChanged amountTop has the focus")
-                    if (it.isFocused) {
-                        android.util.Log.d("MainActivity", " isFocused amountTop has the focus")
+                        amountTop = ""
+                        amountBottom = ""
+
+                        /*
+                        val amountIn = amountTop.toDoubleOrNull() ?: 0.0
+                        val amountOut = amountBottom.toDoubleOrNull() ?: 0.0
+*/
+
+
                     }
                 }
-                .clickable {
-                    android.util.Log.d("MainActivity", "click amountTop has the focus")
-                }*/
         )
 
         Text(
@@ -123,24 +164,29 @@ fun Xchange(modifier: Modifier = Modifier) {
 
         TextField(
             value = amountBottom,
-            onValueChange = { str -> amountBottom = str },
+            onValueChange = { str ->
+                amountBottom = str
+
+                val amountOut = amountBottom.toDoubleOrNull() ?: 0.0
+                val result = amountOut / xchRate
+                amountTop = NumberFormat.getInstance().format(result)
+            },
             singleLine = true,
             label = { Text("Amount") },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
             enabled = true,
             modifier = Modifier
                 .onFocusEvent {
                     if (it.isFocused) {
+                        xchDirection = Direction.TF_BOTTOM
                         android.util.Log.d("MainActivity", " isFocused amountBottom has the focus")
+                        amountBottom = ""
+                        amountTop = ""
                     }
-                    //android.util.Log.d("MainActivity", " FocusEvent amountBottom hasFocus=${it.hasFocus}")
                 }
-                /*
-                .onFocusChanged {
-                    android.util.Log.d("MainActivity", " FocusChanged amountBottom has the focus")
-                }
-                .clickable {
-                    android.util.Log.d("MainActivity", "click amountBottom has the focus")
-                }*/
         )
 
 
