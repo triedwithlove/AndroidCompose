@@ -83,7 +83,6 @@ fun Xchange(modifier: Modifier = Modifier) {
     var amountTop by remember { mutableStateOf("") }
     var amountBottom by remember { mutableStateOf("") }
     var isError by remember { mutableStateOf(false) }
-//    val focusRequester = remember { FocusRequester() }
 
     var xchDirection by remember { mutableStateOf(Direction.INIT) }
     val xchRate: Double = 416.365
@@ -98,14 +97,6 @@ fun Xchange(modifier: Modifier = Modifier) {
         xRateStr = "X-Rate: 1 > $xchRate"
     }
 
-    /*fun validate(text: String) {
-        isError =
-    }*/
-/*
-    val amountIn = amountTop.toDoubleOrNull() ?: 0.0
-    val amountOut = amountBottom.toDoubleOrNull() ?: 0.0
-*/
-
     Column (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -116,9 +107,7 @@ fun Xchange(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
 
             modifier = Modifier
-                //.background(Color.LightGray)
                 .fillMaxWidth(0.8f)
-                //.padding(top = 20.dp, bottom = 20.dp)
                 .border(2.dp, Color.Black, RoundedCornerShape(15.dp))
                 .clip(shape = RoundedCornerShape(15.dp))
                 //.border(2.dp, Color.Black, RectangleShape)
@@ -151,15 +140,6 @@ fun Xchange(modifier: Modifier = Modifier) {
                         amountBottom = NumberFormat.getNumberInstance().format(result)
 
                     }
-                    //android.util.Log.d("MainActivity", " valueChanged amountTop=$amountTop")
-
-                    /*
-                    //option 1 clear input and output when focus changes
-                                    val amountIn = amountTop.toDoubleOrNull() ?: 0.0
-                                    val result = amountIn * xchRate
-                                    amountBottom = NumberFormat.getNumberInstance().format(result)
-                                    //android.util.Log.d("MainActivity", " valueChanged amountTop=$amountTop")
-                    */
                 },
                 textStyle = TextStyle.Default.copy(fontSize = 28.sp, fontWeight = FontWeight.Bold),
                 singleLine = true,
@@ -170,7 +150,6 @@ fun Xchange(modifier: Modifier = Modifier) {
                     disabledContainerColor = Color.Gray,
                     errorContainerColor = Color.Red
                 ),
-                //colors = TextFieldDefaults.t,
                 label = { Text("Amount (\$CAD)", fontSize = 20.sp, fontWeight = FontWeight.Bold) },
                 leadingIcon = {
                     Image(
@@ -186,19 +165,10 @@ fun Xchange(modifier: Modifier = Modifier) {
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-//not working                    .background(Color.LightGray)
                     .onFocusEvent {
                         if (it.isFocused) {
                             xchDirection = Direction.TF_TOP
                             android.util.Log.d("MainActivity", " isFocused amountTop has the focus")
-
-                            //
-
-                            /*
-    //option 1 clear input and output when focus changes
-                            amountTop = ""
-                            amountBottom = ""
-    */
                         }
                     }
             )
@@ -207,12 +177,11 @@ fun Xchange(modifier: Modifier = Modifier) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    //                .background(Color.Blue)
                     .padding(top = 5.dp, bottom = 5.dp)
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(iconDirection),
-                    contentDescription = null,
+                    contentDescription = "direction",
                     modifier = Modifier
                         .size(50.dp)
                         .padding(start = 10.dp, end = 10.dp)
@@ -240,17 +209,7 @@ fun Xchange(modifier: Modifier = Modifier) {
                     } else {
                         isError = false
                         amountTop = NumberFormat.getNumberInstance().format(result)
-
-//                        val result = amountIn * xchRate
-  //                      amountBottom = NumberFormat.getNumberInstance().format(result)
                     }
-
-                    /*
-                    //option 1 clear input and output when focus changes
-                                    val amountOut = amountBottom.toDoubleOrNull() ?: 0.0
-                                    val result = amountOut / xchRate
-                                    amountTop = NumberFormat.getInstance().format(result)
-                    */
                 },
                 textStyle = TextStyle.Default.copy(fontSize = 28.sp, fontWeight = FontWeight.Bold),
                 singleLine = true,
@@ -280,21 +239,12 @@ fun Xchange(modifier: Modifier = Modifier) {
                         if (it.isFocused) {
                             xchDirection = Direction.TF_BOTTOM
                             android.util.Log.d("MainActivity", " isFocused amountBottom has the focus")
-                            /*
-    //option 1 clear input and output when focus changes
-                            amountBottom = ""
-                            amountTop = ""
-    */
                         }
                     }
             )
             Spacer(modifier = Modifier.height(15.dp))
-
         }
-
     }
-
-
 }
 
 @Preview(showBackground = true)
