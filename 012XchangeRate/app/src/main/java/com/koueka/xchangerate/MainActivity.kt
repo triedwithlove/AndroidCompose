@@ -4,18 +4,30 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,15 +36,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.koueka.xchangerate.ui.theme.XchangeRateTheme
 import java.text.NumberFormat
 
@@ -43,12 +64,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             XchangeRateTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Xchange(modifier = Modifier.fillMaxSize().padding(innerPadding).background(Color.LightGray))
-
-                    /*Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )*/
+                    Xchange(modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+//                        .background(Color.LightGray)
+                    )
                 }
             }
         }
@@ -62,11 +82,25 @@ enum class Direction {INIT, TF_TOP, TF_BOTTOM}
 fun Xchange(modifier: Modifier = Modifier) {
     var amountTop by remember { mutableStateOf("") }
     var amountBottom by remember { mutableStateOf("") }
+    var isError by remember { mutableStateOf(false) }
 //    val focusRequester = remember { FocusRequester() }
 
     var xchDirection by remember { mutableStateOf(Direction.INIT) }
-    val xchRate: Double = 416.36517
+    val xchRate: Double = 416.365
 
+    var iconDirection = R.drawable.stat_minus_3_64dp
+    var xRateStr = "X-Rate: 1 > $xchRate"
+    if (Direction.TF_BOTTOM == xchDirection) {
+        iconDirection = R.drawable.stat_3_64dp
+        xRateStr = "X-Rate: 1 > ${String.format("%.4f", 1/xchRate)}"
+    } else {
+        iconDirection = R.drawable.stat_minus_3_64dp
+        xRateStr = "X-Rate: 1 > $xchRate"
+    }
+
+    /*fun validate(text: String) {
+        isError =
+    }*/
 /*
     val amountIn = amountTop.toDoubleOrNull() ?: 0.0
     val amountOut = amountBottom.toDoubleOrNull() ?: 0.0
@@ -77,140 +111,187 @@ fun Xchange(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        /*
-        TextField(
-            value = amountTop,
-            onValueChange = { amountTop = it },
-            singleLine = true,
-            label = { Text("Amount") },
-            enabled = false,
+
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+
             modifier = Modifier
-                .onFocusEvent {
-                    android.util.Log.d("MainActivity", " FocusEvent amountTop has the focus")
-                }
-                .onFocusChanged {
-                    android.util.Log.d("MainActivity", " FocusChanged amountTop has the focus")
-                }
-                .onKeyEvent {
-                    android.util.Log.d("MainActivity", " keyEvent amountTop has the focus")
-                    true
-                }
-                //.focusRequester(focusRequester)
-                .clickable {
-                    //onClick = {}
-                    android.util.Log.d("MainActivity", "click amountTop has the focus")
-                    //focusRequester.requestFocus()
-                }
-//                .focusRequester(focusRequester)
-        )
-*/
+                //.background(Color.LightGray)
+                .fillMaxWidth(0.8f)
+                //.padding(top = 20.dp, bottom = 20.dp)
+                .border(2.dp, Color.Black, RoundedCornerShape(15.dp))
+                .clip(shape = RoundedCornerShape(15.dp))
+                //.border(2.dp, Color.Black, RectangleShape)
+                .background(Color.LightGray)
+        ) {
+            Spacer(modifier = Modifier.height(15.dp))
+            Text(
+                text = "eXchange Rate",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 5.dp)
+            )
 
-        TextField(
-            value = amountTop,
-            onValueChange = { str ->
-                amountTop = str
+            TextField(
+                value = amountTop,
+                onValueChange = { str ->
+                    amountTop = str
 
-                //
-                val amountIn = amountTop.toDoubleOrNull() ?: 0.0
-                val result = amountIn * xchRate
-                amountBottom = NumberFormat.getInstance().format(result)
+                    val tmp = amountTop.replace(oldValue = ",", newValue = "", ignoreCase = true)
+                    val amountIn = tmp.toDoubleOrNull() ?: 0.0
+                    if (amountIn > 0.0) {
+                        amountTop = NumberFormat.getNumberInstance().format(amountIn)
+                    }
+                    if (amountIn > 10000) {
+                        isError = true
 
-                /*
-                                //val amountIn = amountTop.toDoubleOrNull() ?: 0.0
-                                var amountIn = 0.0
-                                android.util.Log.d("MainActivity", " valueChanged amountTop=$amountTop")
-                                if (null == amountTop.toDoubleOrNull()) {
-                                    val tmp = NumberFormat.getNumberInstance().format(amountTop)
-                                    android.util.Log.d("MainActivity", " valueChanged tmp=$tmp")
-                                    amountIn = tmp.toDoubleOrNull() ?: 0.0
-                                    android.util.Log.d("MainActivity", " valueChanged amountIn=$amountIn")
-                                } else {
-                                    amountIn = amountTop.toDoubleOrNull() ?: 0.0
-                                    android.util.Log.d("MainActivity", " valueChanged amountIn=$amountIn")
-                                }
-
-                                val result = amountIn * xchRate
-                                amountBottom = NumberFormat.getNumberInstance().format(result)
-                */
-            },
-            singleLine = true,
-            label = { Text("Amount") },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done
-            ),
-            modifier = Modifier
-                .onFocusEvent {
-                    if (it.isFocused) {
-                        xchDirection = Direction.TF_TOP
-                        android.util.Log.d("MainActivity", " isFocused amountTop has the focus")
-                        amountTop = ""
-                        amountBottom = ""
-
-                        /*
-                        val amountIn = amountTop.toDoubleOrNull() ?: 0.0
-                        val amountOut = amountBottom.toDoubleOrNull() ?: 0.0
-*/
-
+                    } else {
+                        isError = false
+                        val result = amountIn * xchRate
+                        amountBottom = NumberFormat.getNumberInstance().format(result)
 
                     }
-                }
-        )
+                    //android.util.Log.d("MainActivity", " valueChanged amountTop=$amountTop")
 
-        Text(
-            text = "Xchange rate: 1 > 439",
-            modifier = Modifier
-        )
+                    /*
+                    //option 1 clear input and output when focus changes
+                                    val amountIn = amountTop.toDoubleOrNull() ?: 0.0
+                                    val result = amountIn * xchRate
+                                    amountBottom = NumberFormat.getNumberInstance().format(result)
+                                    //android.util.Log.d("MainActivity", " valueChanged amountTop=$amountTop")
+                    */
+                },
+                textStyle = TextStyle.Default.copy(fontSize = 28.sp, fontWeight = FontWeight.Bold),
+                singleLine = true,
+                isError = isError,
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = Color.Gray,
+                    errorContainerColor = Color.Red
+                ),
+                //colors = TextFieldDefaults.t,
+                label = { Text("Amount (\$CAD)", fontSize = 20.sp, fontWeight = FontWeight.Bold) },
+                leadingIcon = {
+                    Image(
+                        painter = painterResource(R.drawable.canada_flag),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(50.dp)
+                            .padding(start = 5.dp, end = 5.dp)
+                    )  },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+//not working                    .background(Color.LightGray)
+                    .onFocusEvent {
+                        if (it.isFocused) {
+                            xchDirection = Direction.TF_TOP
+                            android.util.Log.d("MainActivity", " isFocused amountTop has the focus")
 
-        TextField(
-            value = amountBottom,
-            onValueChange = { str ->
-                amountBottom = str
+                            //
 
-                val amountOut = amountBottom.toDoubleOrNull() ?: 0.0
-                val result = amountOut / xchRate
-                amountTop = NumberFormat.getInstance().format(result)
-            },
-            singleLine = true,
-            label = { Text("Amount") },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done
-            ),
-            enabled = true,
-            modifier = Modifier
-                .onFocusEvent {
-                    if (it.isFocused) {
-                        xchDirection = Direction.TF_BOTTOM
-                        android.util.Log.d("MainActivity", " isFocused amountBottom has the focus")
-                        amountBottom = ""
-                        amountTop = ""
-                    }
-                }
-        )
-
-
-
-        /*
-        TextField(
-            value = amountBottom,
-            onValueChange = { amountBottom = it },
-            singleLine = true,
-            label = { Text("Amount") },
-            interactionSource = remember { MutableInteractionSource() }
-                .also {
-                    param ->
-                    LaunchedEffect(param) {
-                        param.interactions.collect {
-                            if (it is PressInteraction) {
-                                android.util.Log.d("MainActivity", "click amountBottom has the focus")
-                                //not working
-                            }
+                            /*
+    //option 1 clear input and output when focus changes
+                            amountTop = ""
+                            amountBottom = ""
+    */
                         }
                     }
-                }
-        )
-        */
+            )
+
+            Row (horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    //                .background(Color.Blue)
+                    .padding(top = 5.dp, bottom = 5.dp)
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(iconDirection),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .padding(start = 10.dp, end = 10.dp)
+                )
+                Text(
+                    text = xRateStr,
+                    fontSize = 18.sp,
+                )
+            }
+
+            TextField(
+                value = amountBottom,
+                onValueChange = { str ->
+                    amountBottom = str
+
+                    val tmp = amountBottom.replace(oldValue = ",", newValue = "", ignoreCase = true)
+                    val amountOut = tmp.toDoubleOrNull() ?: 0.0
+                    if (amountOut > 0.0) {
+                        amountBottom = NumberFormat.getNumberInstance().format(amountOut)
+                    }
+                    val result = amountOut / xchRate
+
+                    if (result > 10000) {
+                        isError = true
+                    } else {
+                        isError = false
+                        amountTop = NumberFormat.getNumberInstance().format(result)
+
+//                        val result = amountIn * xchRate
+  //                      amountBottom = NumberFormat.getNumberInstance().format(result)
+                    }
+
+                    /*
+                    //option 1 clear input and output when focus changes
+                                    val amountOut = amountBottom.toDoubleOrNull() ?: 0.0
+                                    val result = amountOut / xchRate
+                                    amountTop = NumberFormat.getInstance().format(result)
+                    */
+                },
+                textStyle = TextStyle.Default.copy(fontSize = 28.sp, fontWeight = FontWeight.Bold),
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = Color.Gray,
+                    errorContainerColor = Color.Red
+                ),
+                label = { Text("Amount (XAF/CFA)", fontSize = 20.sp, fontWeight = FontWeight.Bold) },
+                leadingIcon = {
+                    Image(
+                        painter = painterResource(R.drawable.cameroon_flag),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(50.dp)
+                            .padding(start = 5.dp, end = 5.dp)
+                    )  },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
+                enabled = true,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onFocusEvent {
+                        if (it.isFocused) {
+                            xchDirection = Direction.TF_BOTTOM
+                            android.util.Log.d("MainActivity", " isFocused amountBottom has the focus")
+                            /*
+    //option 1 clear input and output when focus changes
+                            amountBottom = ""
+                            amountTop = ""
+    */
+                        }
+                    }
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+
+        }
+
     }
 
 
@@ -224,20 +305,3 @@ fun XchangePreview() {
     }
 }
 
-/*
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    XchangeRateTheme {
-        Greeting("Android")
-    }
-}
-*/
