@@ -9,8 +9,8 @@ fun main() {
         "Jupiter" to 79,
         "Saturn" to 82,
         "Uranus" to 27,
-        "Nepturne" to 14)
-    println("rockPlanet: ${solarSystem}")
+        "Neptune" to 14)
+    println("rockPlanet: $solarSystem")
     println("rockPlanet: ${solarSystem.toString()}")
 
     println()

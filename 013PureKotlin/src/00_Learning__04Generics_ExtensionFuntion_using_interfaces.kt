@@ -1,4 +1,4 @@
-/*
+
 enum class DifficultyLvl {
     EASY, MEDIUM, HARD
 }
@@ -98,4 +98,3 @@ fun main() {
     QuizzExt().printProgressBar()
 
 }
-*/
