@@ -1,8 +1,8 @@
 
 fun main() {
 
-    val solarSystem = listOf<String>("Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Nepturne")
-    println("rockPlanet: ${solarSystem}")
+    val solarSystem = listOf<String>("Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune")
+    println("rockPlanet: $solarSystem")
     println("rockPlanet: ${solarSystem.toString()}")
 
     println("solarSystem: ")

@@ -90,8 +90,4 @@ fun main() {
     println("${numQuestionGenericEnum.answer}")
     println("${numQuestionGenericEnum.difficulty}")
     println()
-
-
-
-
 }

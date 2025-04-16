@@ -5,7 +5,7 @@ fun main() {
     println("rockPlanet: ${rockPlanets}")
     println("rockPlanet: ${rockPlanets.toString()}")
 
-    val gazePlanets = arrayOf("Jupiter", "Saturn", "Uranus", "Nepturne")
+    val gazePlanets = arrayOf("Jupiter", "Saturn", "Uranus", "Neptune")
     println("gazePlanet: ")
     gazePlanets.forEach {
         println(it)
