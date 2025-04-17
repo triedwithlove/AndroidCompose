@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -38,6 +40,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             CoursesGridAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    TopicList(
+                        com.koueka.coursesgridapp.data.DataSource.topics,
+                        modifier = Modifier.padding(innerPadding)
+                    )
+/*
                     TopicCard(
                         Topic(
                             R.string.architecture,
@@ -45,7 +52,7 @@ class MainActivity : ComponentActivity() {
                             R.drawable.architecture
                         )
                     )
-
+*/
 
 
 /*                    Greeting(
@@ -56,6 +63,26 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+
+
+@Composable
+fun TopicList(topicList: List<Topic>, modifier: Modifier = Modifier) {
+    LazyVerticalGrid (columns = GridCells.Adaptive(200.dp), modifier = modifier) {
+        items(count = topicList.size) { item ->
+            TopicCard(
+                topic = topicList.get(item),
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun TopicListPreview() {
+    TopicList(com.koueka.coursesgridapp.data.DataSource.topics)
 }
 
 
