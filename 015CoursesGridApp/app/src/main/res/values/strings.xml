@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CoursesGridApp</string>
+
+    <string name="architecture">Architecture</string>
 </resources>
