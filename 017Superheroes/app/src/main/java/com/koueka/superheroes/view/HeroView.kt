@@ -36,14 +36,10 @@ fun HeroView(
         elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.elevation))  ,
         modifier = modifier) {
         Row(
-            //modifier = modifier
             modifier = Modifier
                 .fillMaxWidth()
                 //.border(2.dp, Color.Black, MaterialTheme.shapes.medium)
                 .clip(shape = MaterialTheme.shapes.medium)
-                //.border(2.dp, Color.Black, RoundedCornerShape(30.dp))
-                //.clip(shape = RoundedCornerShape(30.dp))
-                //.background(color = Color.LightGray)
                 .padding(dimensionResource(R.dimen.padding_medium))
         ) {
             Column(
@@ -58,13 +54,11 @@ fun HeroView(
                 Text(
                     text = stringResource(hero.descriptionRes),
                     style = MaterialTheme.typography.bodyLarge
-                    //style = MaterialTheme.typography.displayLarge
                 )
             }
             Box(modifier = Modifier
                 .size(dimensionResource(R.dimen.image_size))
                 .clip(shape = MaterialTheme.shapes.small)
-                //.clip(shape = RoundedCornerShape(15.dp))
             ) {
                 Image(
                     painter = painterResource(hero.imageRes),

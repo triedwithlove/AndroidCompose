@@ -32,17 +32,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             SuperheroesTheme {
                 HeroesApp()
-/*                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HeroView(hero = HeroesRepository.singleHero)
-
-
-                }*/
             }
         }
     }
 }
-
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
