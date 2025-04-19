@@ -58,7 +58,7 @@ fun HeroView(
                 Text(
                     text = stringResource(hero.descriptionRes),
                     style = MaterialTheme.typography.bodyLarge
-                    //                    style = MaterialTheme.typography.displayLarge
+                    //style = MaterialTheme.typography.displayLarge
                 )
             }
             Box(modifier = Modifier
