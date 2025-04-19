@@ -24,6 +24,9 @@ import androidx.compose.ui.unit.dp
 import com.koueka.superheroes.data.HeroesRepository
 import com.koueka.superheroes.ui.theme.SuperheroesTheme
 import com.koueka.superheroes.view.HeroView
+import com.koueka.superheroes.view.HeroesFadeAnimatedView
+import com.koueka.superheroes.view.HeroesSlideItemAnimatedView
+import com.koueka.superheroes.view.HeroesView
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +34,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SuperheroesTheme {
-                HeroesApp()
+                //HeroesApp()
+                //HeroesFadeAnimatedApp()
+                HeroesSlideItemAnimatedApp()
             }
         }
     }
@@ -56,24 +61,43 @@ fun HeroesTopAppBar(modifier: Modifier = Modifier) {
 
 
 @Composable
+fun HeroesFadeAnimatedApp(modifier: Modifier = Modifier) {
+    Scaffold(
+        topBar = { HeroesTopAppBar() },
+        modifier = Modifier.fillMaxSize()
+    ) { innerPadding ->
+        HeroesFadeAnimatedView(
+            heroes = HeroesRepository.heroes,
+            modifier = Modifier.padding(innerPadding)
+        )
+    }
+}
+
+
+@Composable
+fun HeroesSlideItemAnimatedApp(modifier: Modifier = Modifier) {
+    Scaffold(
+        topBar = { HeroesTopAppBar() },
+        modifier = Modifier.fillMaxSize()
+    ) { innerPadding ->
+        HeroesSlideItemAnimatedView(
+            heroes = HeroesRepository.heroes,
+            modifier = Modifier.padding(innerPadding)
+        )
+    }
+}
+
+
+@Composable
 fun HeroesApp(modifier: Modifier = Modifier) {
     Scaffold(
         topBar = { HeroesTopAppBar() },
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
-        LazyColumn(modifier = Modifier.padding(innerPadding)) {
-            items(items = HeroesRepository.heroes) { heroParam ->
-                HeroView(
-                    hero = heroParam,
-                    modifier = Modifier.padding(
-                        top = dimensionResource(R.dimen.padding_extra_small),
-                        bottom = dimensionResource(R.dimen.padding_extra_small),
-                        start = dimensionResource(R.dimen.padding_medium),
-                        end = dimensionResource(R.dimen.padding_medium)
-                    )
-                )
-            }
-        }
+        HeroesView(
+            heroes = HeroesRepository.heroes,
+            modifier = Modifier.padding(innerPadding)
+        )
     }
 }
 
