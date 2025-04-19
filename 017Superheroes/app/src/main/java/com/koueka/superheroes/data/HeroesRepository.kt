@@ -9,4 +9,12 @@ object HeroesRepository {
         descriptionRes = R.string.description1,
         imageRes = R.drawable.android_superhero1
     )
+
+    val heroes = listOf(
+        Hero(
+            nameRes = R.string.hero1,
+            descriptionRes = R.string.description1,
+            imageRes = R.drawable.android_superhero1
+        )
+    )
 }
