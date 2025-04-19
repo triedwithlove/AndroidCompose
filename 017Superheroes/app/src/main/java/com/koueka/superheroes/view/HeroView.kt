@@ -3,6 +3,7 @@ package com.koueka.superheroes.view
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,38 +31,49 @@ fun HeroView(
     hero: Hero,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = Modifier
-            //.background(color = Color.Yellow)
-            //.clip(shape = RoundedCornerShape(15.dp))
-            .padding(top = 5.dp, start = 1.dp, end = 1.dp)
-            //.wrapContentSize()
-    ) {
-        Row(
-            //modifier = modifier
+    Card() {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .border(2.dp, Color.Black, RoundedCornerShape(15.dp))
-                .clip(shape = RoundedCornerShape(15.dp))
-                .background(color = Color.LightGray)
-                .padding(16.dp)
+                //.background(color = Color.Yellow)
+                //.clip(shape = RoundedCornerShape(15.dp))
+                //.padding(top = 50.dp, start = 1.dp, end = 1.dp)
+            //.wrapContentSize()
         ) {
-            Column(
+            Row(
+                //modifier = modifier
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 16.dp)
+                    .fillMaxWidth()
+                    //.border(2.dp, Color.Black, MaterialTheme.shapes.medium)
+                    .clip(shape = MaterialTheme.shapes.medium)
+                    //.border(2.dp, Color.Black, RoundedCornerShape(30.dp))
+                    //.clip(shape = RoundedCornerShape(30.dp))
+                    //.background(color = Color.LightGray)
+                    .padding(16.dp)
             ) {
-                Text(text = stringResource(hero.nameRes))
-                Text(text = stringResource(hero.descriptionRes))
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 16.dp)
+                ) {
+                    Text(
+                        text = stringResource(hero.nameRes),
+                        style = MaterialTheme.typography.displaySmall
+                    )
+                    Text(
+                        text = stringResource(hero.descriptionRes),
+                        style = MaterialTheme.typography.bodyLarge
+                        //                    style = MaterialTheme.typography.displayLarge
+                    )
+                }
+                Image(
+                    painter = painterResource(hero.imageRes),
+                    contentDescription = stringResource(hero.nameRes),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(72.dp)
+                        .clip(shape = RoundedCornerShape(15.dp))
+                )
             }
-            Image(
-                painter = painterResource(hero.imageRes),
-                contentDescription = stringResource(hero.nameRes),
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(72.dp)
-                    .clip(shape = RoundedCornerShape(15.dp))
-            )
         }
     }
 }
