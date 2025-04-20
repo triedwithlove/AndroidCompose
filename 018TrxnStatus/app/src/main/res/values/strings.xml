@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Transaction Status</string>
+
+    <string name="str_trxn_ph3_delivery_s2_progress">Order/request picked up by carrier/partner.\nDelivery in progress...</string>
+</resources>
