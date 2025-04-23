@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">History</string>
+    <string name="user_kompina">Kompina</string>
+    <string name="user_uriel_aude">UrielAude</string>
+    <string name="user_withlove_t">WithloveT</string>
+    <string name="user_elder_d">ElderDaughter</string>
+    <string name="user_woman_f">WomanFash</string>
+    <string name="user_sweetheart">Sweetheart</string>
+
+
+
+
+    <string name="expand_button_content_description">
+        See more or less information about a Transaction.
+    </string>
 </resources>
