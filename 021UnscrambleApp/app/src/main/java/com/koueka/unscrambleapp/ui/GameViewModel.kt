@@ -67,7 +67,7 @@ class GameViewModel: ViewModel() {
     }
 
     fun checkUserGuess() {
-        android.util.Log.d("MainActivity", "userGuess = $userGuess currentWord = $currentWord")
+//>>        android.util.Log.d("MainActivity", "userGuess = $userGuess currentWord = $currentWord")
         if (userGuess.equals(currentWord, ignoreCase = true)) {
             //User's guess is correct, increase the score
             val updatedScore = _uiState.value.score.plus(SCORE_INCREASE)
